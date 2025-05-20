@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import CryptoJS from "crypto-js";
 import { assets } from "../assets/assets";
-import { ToastContainer, toast } from "react-toastify";
-
-import "react-toastify/dist/ReactToastify.css";
 
 const Fund = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setformData] = useState({
+    fullName: "",
+    email: "",
+    phone: "",
+    message: "",
     amount: "10",
     tax_amount: "0",
     total_amount: "10",
@@ -15,20 +16,14 @@ const Fund = () => {
     product_service_charge: "0",
     product_delivery_charge: "0",
     product_code: "EPAYTEST",
-    success_url: "http://localhost:5173",
-    failure_url: "http://localhost:5173",
+    success_url: "http://localhost:5173/paymentsuccess",
+    failure_url: "http://localhost:5173/paymentfailure",
     signed_field_names: "total_amount,transaction_uuid,product_code",
     signature: "",
-    secret: "8gBm/:&EnhH.1/q", // Keep secret on the server-side in production
+    secret: "8gBm/:&EnhH.1/q",
   });
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [message, setMessage] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  // Generate signature function
+  // generate signature function
   const generateSignature = (
     total_amount,
     transaction_uuid,
@@ -37,57 +32,51 @@ const Fund = () => {
   ) => {
     const hashString = `total_amount=${total_amount},transaction_uuid=${transaction_uuid},product_code=${product_code}`;
     const hash = CryptoJS.HmacSHA256(hashString, secret);
-    return CryptoJS.enc.Base64.stringify(hash);
+    const hashedSignature = CryptoJS.enc.Base64.stringify(hash);
+    return hashedSignature;
   };
 
+  // useeffect
   useEffect(() => {
-    const { total_amount, transaction_uuid, product_code, secret } = formData;
-    const hashedSignature = generateSignature(
+    const { total_amount, transaction_uuid, product_code } = formData;
+
+    const signature = generateSignature(
       total_amount,
       transaction_uuid,
       product_code,
-      secret
+      formData.secret
     );
-    setFormData((prev) => ({ ...prev, signature: hashedSignature }));
-  }, [formData.amount]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setIsLoading(true);
+    const baseSuccessURL = "http://localhost:5173/paymentsuccess";
+    const userPayload = {
+      fullName: formData.fullName,
+      email: formData.email,
+      phone: formData.phone,
+      message: formData.message,
+      total_amount:formData.total_amount
+    };
+    const encodedUser = btoa(JSON.stringify(userPayload));
 
-    setTimeout(() => {
-      setIsLoading(false);
-      toast.success("Redirecting to eSewa payment...", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: true,
-      });
+    const finalSuccessURL = `${baseSuccessURL}?user=${encodeURIComponent(
+      encodedUser
+    )}`;
 
-      // Create and submit the eSewa payment form dynamically
-      const esewaForm = document.createElement("form");
-      esewaForm.action = "https://rc-epay.esewa.com.np/api/epay/main/v2/form";
-      esewaForm.method = "POST";
-      esewaForm.style.display = "none";
-
-      Object.entries(formData).forEach(([key, value]) => {
-        if (key !== "secret") {
-          // Exclude secret from being sent to the frontend
-          const input = document.createElement("input");
-          input.type = "hidden";
-          input.name = key;
-          input.value = value;
-          esewaForm.appendChild(input);
-        }
-      });
-
-      document.body.appendChild(esewaForm);
-      esewaForm.submit();
-    }, 2000);
-  };
+    setformData((prev) => ({
+      ...prev,
+      signature,
+      success_url: finalSuccessURL,
+    }));
+    
+  }, [
+    formData.total_amount,
+    formData.fullName,
+    formData.email,
+    formData.phone,
+    formData.message,
+  ]);
 
   return (
     <>
-      <ToastContainer />
       <div className="container mx-auto flex flex-col lg:flex-row items-center justify-between gap-5 px-5 my-10">
         <div className="container w-2/3 mx-auto px-6 py-10">
           <h1 className="text-5xl font-bold text-[#000080] mb-6 text-center">
@@ -113,60 +102,150 @@ const Fund = () => {
           <h2 className="text-3xl md:text-4xl font-bold text-[#000080] mb-6">
             Fund Collection
           </h2>
-          <form onSubmit={handleSubmit}>
+
+          <form
+            action="https://rc-epay.esewa.com.np/api/epay/main/v2/form"
+            method="POST"
+          >
             <input
               type="text"
               placeholder="Full Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={formData.fullName}
+              onChange={(e) =>
+                setformData({ ...formData, fullName: e.target.value })
+              }
               className="w-full p-3 mb-4 border border-gray-300 rounded-lg"
               required
             />
+
             <input
               type="email"
               placeholder="Email Address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={formData.email}
+              onChange={(e) =>
+                setformData({ ...formData, email: e.target.value })
+              }
               className="w-full p-3 mb-4 border border-gray-300 rounded-lg"
               required
             />
+
             <input
               type="tel"
               placeholder="Phone Number"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="w-full p-3 mb-4 border border-gray-300 rounded-lg"
-              pattern="[0-9]{10}"
-              required
-            />
-            <textarea
-              placeholder="Message (optional)"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              className="w-full p-3 mb-4 border border-gray-300 rounded-lg"
-              rows="4"
-            ></textarea>
-            <input
-              type="number"
-              placeholder="Donation Amount (NPR)"
-              value={formData.amount}
+              value={formData.phone}
               onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  amount: e.target.value,
-                  total_amount: e.target.value,
-                })
+                setformData({ ...formData, phone: e.target.value })
               }
               className="w-full p-3 mb-4 border border-gray-300 rounded-lg"
-              min="1"
+              // pattern="[0-9]{10}"
               required
             />
+
+            <textarea
+              placeholder="Message (optional)"
+              value={formData.message}
+              onChange={(e) =>
+                setformData({ ...formData, message: e.target.value })
+              }
+              className="w-full p-3 mb-4 border border-gray-300 rounded-lg"
+              rows="4"
+            />
+
+            <input
+              type="text"
+              id="amount"
+              name="amount"
+              className="w-full p-3 mb-4 border border-gray-300 rounded-lg"
+              autoComplete="off"
+              placeholder="Amount"
+              value={formData.amount}
+              onChange={({ target }) =>
+                setformData({
+                  ...formData,
+                  amount: target.value,
+                  total_amount: target.value,
+                })
+              }
+              required
+            />
+
+            <input
+              type="hidden"
+              id="tax_amount"
+              name="tax_amount"
+              value={formData.tax_amount}
+              required
+            />
+            <input
+              type="hidden"
+              id="total_amount"
+              name="total_amount"
+              value={formData.total_amount}
+              required
+            />
+            <input
+              type="hidden"
+              id="transaction_uuid"
+              name="transaction_uuid"
+              value={formData.transaction_uuid}
+              required
+            />
+
+            <input
+              type="hidden"
+              id="product_code"
+              name="product_code"
+              value={formData.product_code}
+              required
+            />
+            <input
+              type="hidden"
+              id="product_service_charge"
+              name="product_service_charge"
+              value={formData.product_service_charge}
+              required
+            />
+            <input
+              type="hidden"
+              id="product_delivery_charge"
+              name="product_delivery_charge"
+              value={formData.product_delivery_charge}
+              required
+            />
+            <input
+              type="hidden"
+              id="success_url"
+              name="success_url"
+              value={formData.success_url}
+              required
+            />
+            <input
+              type="hidden"
+              id="failure_url"
+              name="failure_url"
+              value={formData.failure_url}
+              required
+            />
+            <input
+              type="hidden"
+              id="signed_field_names"
+              name="signed_field_names"
+              value={formData.signed_field_names}
+              required
+            />
+            <input
+              type="hidden"
+              id="signature"
+              name="signature"
+              value={formData.signature}
+              required
+            />
+
             <button
               type="submit"
               className="w-full py-3 bg-[#007BFF] text-white rounded-lg hover:bg-[#0056b3] transition duration-300"
-              disabled={isLoading}
             >
-              {isLoading ? "Submitting..." : "Pay Now"}
+              pay via Esewa
             </button>
           </form>
         </div>

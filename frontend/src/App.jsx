@@ -9,14 +9,17 @@ import Fund from "./components/Fund";
 import Blood from "./components/Blood";
 import Foodandcloth from "./components/Foodandcloth";
 import Home from "./pages/Home";
+import PaymentSuccess from "./components/PaymentSuccess";
 
 function App() {
   return (
     <div>
-      {/* Navbar */}
+      <Routes>
+        <Route path="/paymentsuccess" element={<PaymentSuccess />} />
+      </Routes>
 
       <Navbar />
-      {/* Routes for the pages */}
+
       <div className="pt-20">
         <Routes>
           <Route path="/" element={<Home />} />

@@ -4,8 +4,12 @@ import { Link } from "react-router-dom";
 
 const HeroPage = () => {
   const [numbers, setNumbers] = useState([0, 0, 0, 0, 0, 0]);
-  const [isAnimated, setIsAnimated] = useState(false); // To trigger animation only once
-  const cardRef = useRef(null); // Reference for Intersection Observer
+  const [isAnimated, setIsAnimated] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
+  const [showSignUp, setShowSignUp] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  const cardRef = useRef(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -74,13 +78,157 @@ const HeroPage = () => {
               </button>
             </Link>
           </div>
+
+          {/* Login/Signup Button */}
+          {/* <button
+            onClick={() => setShowLogin(true)}
+            className="mt-6 px-6 py-3 bg-green-600 text-white rounded-lg text-lg font-semibold hover:bg-green-700 transition"
+          >
+            Login / Sign Up
+          </button> */}
         </div>
+
         <img
           src={assets.hero_img}
           alt="Hero Background"
           className="w-auto h-[60%] object-cover opacity-100 pointer-events-none overflow-hidden rounded-xl m-20"
         />
       </section>
+
+      {/*  Top-right avatar with logout dropdown */}
+      {/* <div className="absolute top-4 right-6 z-50">
+        <div className="relative">
+          <img
+            src="https://www.svgrepo.com/show/382106/avatar-boy-face-man-user.svg"
+            alt="User Avatar"
+            className="w-10 h-10 rounded-full cursor-pointer border-2 border-blue-500"
+            onClick={() => setShowDropdown((prev) => !prev)}
+          />
+          {showDropdown && (
+            <div className="absolute right-0 mt-2 w-28 bg-white shadow-md rounded-md border p-2">
+              <button
+                onClick={() => {
+                  // Placeholder logout logic
+                  setShowDropdown(false);
+                  alert("Logged out!");
+                }}
+                className="text-red-600 font-medium hover:underline"
+              >
+                Logout
+              </button>
+            </div>
+          )}
+        </div>
+      </div> */}
+
+      {/* 🔹 Login Modal */}
+      {/* {showLogin && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-8 rounded-lg shadow-lg w-[90%] max-w-md relative">
+            <h2 className="text-2xl font-bold text-[#000080] mb-6 text-center">
+              Login
+            </h2>
+            <form>
+              <input
+                type="email"
+                placeholder="Email"
+                className="w-full mb-4 p-3 border border-gray-300 rounded"
+              />
+              <input
+                type="password"
+                placeholder="Password"
+                className="w-full mb-4 p-3 border border-gray-300 rounded"
+              />
+              <button
+                type="submit"
+                className="w-full bg-[#007BFF] text-white py-3 rounded hover:bg-[#0056b3]"
+              >
+                Login
+              </button>
+            </form>
+            <p className="text-center mt-4 text-sm text-gray-700">
+              Don’t have an account?{" "}
+              <button
+                onClick={() => {
+                  setShowLogin(false);
+                  setShowSignUp(true);
+                }}
+                className="text-[#007BFF] font-semibold hover:underline"
+              >
+                Sign Up
+              </button>
+            </p>
+            <button
+              onClick={() => setShowLogin(false)}
+              className="absolute top-2 right-3 text-gray-500 hover:text-black text-xl"
+            >
+              &times;
+            </button>
+          </div>
+        </div>
+      )} */}
+
+      {/* 🔹 Signup Modal
+      {showSignUp && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-8 rounded-lg shadow-lg w-[90%] max-w-md relative">
+            <h2 className="text-2xl font-bold text-[#000080] mb-6 text-center">
+              Sign Up
+            </h2>
+            <form>
+              <input
+                type="text"
+                placeholder="Username"
+                className="w-full mb-4 p-3 border border-gray-300 rounded"
+              />
+              <input
+                type="email"
+                placeholder="Email"
+                className="w-full mb-4 p-3 border border-gray-300 rounded"
+              />
+              <input
+                type="tel"
+                placeholder="Phone Number"
+                className="w-full mb-4 p-3 border border-gray-300 rounded"
+              />
+              <input
+                type="password"
+                placeholder="Password"
+                className="w-full mb-4 p-3 border border-gray-300 rounded"
+              />
+              <input
+                type="password"
+                placeholder="Confirm Password"
+                className="w-full mb-4 p-3 border border-gray-300 rounded"
+              />
+              <button
+                type="submit"
+                className="w-full bg-green-600 text-white py-3 rounded hover:bg-green-700"
+              >
+                Register
+              </button>
+            </form>
+            <p className="text-center mt-4 text-sm text-gray-700">
+              Already have an account?{" "}
+              <button
+                onClick={() => {
+                  setShowSignUp(false);
+                  setShowLogin(true);
+                }}
+                className="text-[#007BFF] font-semibold hover:underline"
+              >
+                Login
+              </button>
+            </p>
+            <button
+              onClick={() => setShowSignUp(false)}
+              className="absolute top-2 right-3 text-gray-500 hover:text-black text-xl"
+            >
+              &times;
+            </button>
+          </div>
+        </div>
+      )} */}
 
       <section className="bg-gray-50 py-16 px-4">
         <div className="container mx-auto text-center">

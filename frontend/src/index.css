@@ -1,14 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Outfit:wght@100..900&family=Prata&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400..700&family=Outfit:wght@100..900&family=Prata&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-a.active hr{
-    display: block;
-}
-
-*{
+* {
     font-family: Outfit;
 }
 
@@ -16,15 +12,30 @@ a.active hr{
     font-family: "Prata", serif;
     font-weight: 400;
     font-style: normal;
-  }
+}
 
-  ::-webkit-scrollbar{
+::-webkit-scrollbar {
     display: none;
-  }
-  
-@media(max-width:640px){
-    a.active{
+}
+
+html {
+    scrollbar-width: none;
+}
+
+a.active hr {
+    display: block;
+}
+
+@media(max-width:640px) {
+    a.active {
         background-color: black;
         color: white;
+        border-bottom: 2px solid white;
+    }
+}
+
+@media (max-width: 1024px) {
+    ::-webkit-scrollbar {
+        display: none;
     }
 }

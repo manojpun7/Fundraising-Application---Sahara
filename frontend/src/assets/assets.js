@@ -21,6 +21,7 @@ import social_media from './social-media.png'
 import success from './success.png'
 import delivery from './delivery.png'
 import biology from './biology.png'
+import check from "./check.png"
 
 
 export const assets = {
@@ -35,6 +36,7 @@ export const assets = {
     application,
     fund,
     blood,
+    check,
     foodandcloth,
     eva_logo,
     hero_img,
