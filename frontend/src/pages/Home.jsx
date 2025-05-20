@@ -1,16 +1,18 @@
-import React from 'react'
-import HeroPage from '../components/HeroPage'
-import OurGoals from '../components/OurGoals'
-import Footer from '../components/Footer'
+import React from "react";
+import HeroPage from "../components/HeroPage";
+import OurGoals from "../components/OurGoals";
+import Footer from "../components/Footer";
+
 
 const Home = () => {
   return (
     <div>
-        <HeroPage/>
-        <OurGoals/>
-        <Footer/>
+      <HeroPage />
+   
+      <OurGoals />
+      <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

@@ -1,13 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { assets } from "../assets/assets";
 import { Link } from "react-router-dom";
+import AllPosts from "./AllPosts";
 
 const HeroPage = () => {
-  const [numbers, setNumbers] = useState([0, 0, 0, 0, 0, 0]);
+  const [numbers, setNumbers] = useState([0, 0, 0, 0, 0]);
   const [isAnimated, setIsAnimated] = useState(false);
-  const [showLogin, setShowLogin] = useState(false);
-  const [showSignUp, setShowSignUp] = useState(false);
-  const [showDropdown, setShowDropdown] = useState(false);
 
   const cardRef = useRef(null);
 
@@ -95,148 +93,15 @@ const HeroPage = () => {
         />
       </section>
 
-      {/*  Top-right avatar with logout dropdown */}
-      {/* <div className="absolute top-4 right-6 z-50">
-        <div className="relative">
-          <img
-            src="https://www.svgrepo.com/show/382106/avatar-boy-face-man-user.svg"
-            alt="User Avatar"
-            className="w-10 h-10 rounded-full cursor-pointer border-2 border-blue-500"
-            onClick={() => setShowDropdown((prev) => !prev)}
-          />
-          {showDropdown && (
-            <div className="absolute right-0 mt-2 w-28 bg-white shadow-md rounded-md border p-2">
-              <button
-                onClick={() => {
-                  // Placeholder logout logic
-                  setShowDropdown(false);
-                  alert("Logged out!");
-                }}
-                className="text-red-600 font-medium hover:underline"
-              >
-                Logout
-              </button>
-            </div>
-          )}
-        </div>
-      </div> */}
+      <AllPosts />
 
-      {/* 🔹 Login Modal */}
-      {/* {showLogin && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-8 rounded-lg shadow-lg w-[90%] max-w-md relative">
-            <h2 className="text-2xl font-bold text-[#000080] mb-6 text-center">
-              Login
-            </h2>
-            <form>
-              <input
-                type="email"
-                placeholder="Email"
-                className="w-full mb-4 p-3 border border-gray-300 rounded"
-              />
-              <input
-                type="password"
-                placeholder="Password"
-                className="w-full mb-4 p-3 border border-gray-300 rounded"
-              />
-              <button
-                type="submit"
-                className="w-full bg-[#007BFF] text-white py-3 rounded hover:bg-[#0056b3]"
-              >
-                Login
-              </button>
-            </form>
-            <p className="text-center mt-4 text-sm text-gray-700">
-              Don’t have an account?{" "}
-              <button
-                onClick={() => {
-                  setShowLogin(false);
-                  setShowSignUp(true);
-                }}
-                className="text-[#007BFF] font-semibold hover:underline"
-              >
-                Sign Up
-              </button>
-            </p>
-            <button
-              onClick={() => setShowLogin(false)}
-              className="absolute top-2 right-3 text-gray-500 hover:text-black text-xl"
-            >
-              &times;
-            </button>
-          </div>
-        </div>
-      )} */}
-
-      {/* 🔹 Signup Modal
-      {showSignUp && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-8 rounded-lg shadow-lg w-[90%] max-w-md relative">
-            <h2 className="text-2xl font-bold text-[#000080] mb-6 text-center">
-              Sign Up
-            </h2>
-            <form>
-              <input
-                type="text"
-                placeholder="Username"
-                className="w-full mb-4 p-3 border border-gray-300 rounded"
-              />
-              <input
-                type="email"
-                placeholder="Email"
-                className="w-full mb-4 p-3 border border-gray-300 rounded"
-              />
-              <input
-                type="tel"
-                placeholder="Phone Number"
-                className="w-full mb-4 p-3 border border-gray-300 rounded"
-              />
-              <input
-                type="password"
-                placeholder="Password"
-                className="w-full mb-4 p-3 border border-gray-300 rounded"
-              />
-              <input
-                type="password"
-                placeholder="Confirm Password"
-                className="w-full mb-4 p-3 border border-gray-300 rounded"
-              />
-              <button
-                type="submit"
-                className="w-full bg-green-600 text-white py-3 rounded hover:bg-green-700"
-              >
-                Register
-              </button>
-            </form>
-            <p className="text-center mt-4 text-sm text-gray-700">
-              Already have an account?{" "}
-              <button
-                onClick={() => {
-                  setShowSignUp(false);
-                  setShowLogin(true);
-                }}
-                className="text-[#007BFF] font-semibold hover:underline"
-              >
-                Login
-              </button>
-            </p>
-            <button
-              onClick={() => setShowSignUp(false)}
-              className="absolute top-2 right-3 text-gray-500 hover:text-black text-xl"
-            >
-              &times;
-            </button>
-          </div>
-        </div>
-      )} */}
-
-      <section className="bg-gray-50 py-16 px-4">
+      {/* <section className="bg-gray-50 py-16 px-4">
         <div className="container mx-auto text-center">
           <div className="text-[#000080] text-5xl font-bold">
             By The People, For The People
           </div>
           <div className="mt-8 flex flex-col sm:flex-row sm:space-x-8 space-y-8 sm:space-y-0">
-            {/* Donation Image 1 */}
+           
             <div className="flex-1">
               <img
                 src={assets.donation}
@@ -259,7 +124,7 @@ const HeroPage = () => {
               </div>
             </div>
 
-            {/* Donation Image 2 */}
+         
             <div className="flex-1">
               <img
                 src={assets.application}
@@ -283,7 +148,7 @@ const HeroPage = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Section with Cards */}
       <section className="bg-gray-50">
@@ -295,7 +160,7 @@ const HeroPage = () => {
             { img: assets.form, text: "Beneficiaries Impacted" },
             { img: assets.money_bag, text: "Aid Generated" },
             { img: assets.patient, text: "Blood Distributed" },
-            { img: assets.social_media, text: "Engaged Volunteer" },
+            // { img: assets.social_media, text: "Engaged Volunteer" },
             { img: assets.success, text: "Active Doner" },
             { img: assets.delivery, text: "Food Distributed" },
           ].map((card, index) => (

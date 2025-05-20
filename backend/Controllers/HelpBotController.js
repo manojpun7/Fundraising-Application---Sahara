@@ -3,6 +3,7 @@ import axios from "axios";
 const helpBotController = async (req, res) => {
   const { question } = req.body;
   console.log(question);
+  
   const prompt = `
   your name is Eva.
   I have built a fundraising platform named "Sahara" with the motto "By the People, For the People."  

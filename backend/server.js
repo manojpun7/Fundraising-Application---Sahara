@@ -19,7 +19,7 @@ const port = process.env.PORT || 4000;
 app.use(bodyParser.json());
 app.use(
   cors({
-    origin: "http://localhost:5173",
+     origin: ["http://localhost:5173", "http://localhost:5174"],
   })
 );
 
@@ -32,5 +32,5 @@ app.use("/app/posts", CreatePostRouter);
 app.use("/app/helpbot", helpBotRouter);
 
 app.listen(port, () => {
-  console.log(`Server running at https://localhost:${port}`);
+  console.log(`Server running at http://localhost:${port}`);
 });
