@@ -19,9 +19,7 @@ const port = process.env.PORT || 4000;
 app.use(bodyParser.json());
 app.use(
   cors({
-    origin: "http://localhost:5173", // Allow your frontend origin
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"], // Allowed HTTP methods
-    credentials: true, // Allow cookies/auth headers (if needed)
+    origin: "http://localhost:5173",
   })
 );
 

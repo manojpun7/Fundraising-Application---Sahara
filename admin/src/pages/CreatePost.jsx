@@ -1,5 +1,8 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import axios from "axios";
+import { FaSpinner } from "react-icons/fa";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const CreatePost = () => {
   const [formData, setFormData] = useState({
@@ -9,62 +12,67 @@ const CreatePost = () => {
     deadline: "",
     image: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [success, setSuccess] = useState("");
-  const [error, setError] = useState("");
+  const fileInputRef = useRef(null);
 
-const handleChange = async (e) => {
-  const { name, value, files } = e.target;
-  if (name === "image" && files.length > 0) {
-    const file = files[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setFormData((prev) => ({
-        ...prev,
-        image: reader.result, // base64 string
-      }));
-    };
-    reader.readAsDataURL(file); // Read file as base64
-  } else {
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  }
-};
-
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  setError("");
-  setSuccess("");
-
-  try {
-    const res = await axios.post("http://localhost:4000/app/posts/create", formData);
-
-    if (res.data.success) {
-      setSuccess("Post created successfully!");
-      setFormData({
-        title: "",
-        description: "",
-        targetAmount: "",
-        deadline: "",
-        image: "", // base64
-      });
+  const handleChange = async (e) => {
+    const { name, value, files } = e.target;
+    if (name === "image" && files.length > 0) {
+      const file = files[0];
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData((prev) => ({
+          ...prev,
+          image: reader.result,
+        }));
+      };
+      reader.readAsDataURL(file);
     } else {
-      setError("Failed to create post.");
+      setFormData((prev) => ({ ...prev, [name]: value }));
     }
-  } catch (err) {
-    console.error(err);
-    setError("Something went wrong. Try again.");
-  }
-};
+  };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      const res = await axios.post(
+        "http://localhost:4000/app/posts/create",
+        formData
+      );
+
+      if (res.data.success) {
+        toast.success(" Post created successfully!");
+        setFormData({
+          title: "",
+          description: "",
+          targetAmount: "",
+          deadline: "",
+          image: "",
+        });
+        if (fileInputRef.current) {
+          fileInputRef.current.value = null;
+        }
+      } else {
+        toast.error("Failed to create post.");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Something went wrong. Try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <section className="max-w-2xl mx-auto mt-10 p-6 bg-white shadow-md rounded-lg">
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
+      
       <h2 className="text-2xl font-bold mb-6 text-center text-blue-700">
         Create Campaign / Fundraising Post
       </h2>
-
-      {success && <p className="mb-4 text-green-600 text-center">{success}</p>}
-      {error && <p className="mb-4 text-red-600 text-center">{error}</p>}
 
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
@@ -123,15 +131,26 @@ const handleSubmit = async (e) => {
             accept="image/*"
             onChange={handleChange}
             className="w-full"
+            ref={fileInputRef}
           />
         </div>
 
         <div className="text-center">
           <button
             type="submit"
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-300"
+            disabled={isLoading}
+            className={`flex items-center justify-center gap-2 bg-blue-600 text-white px-6 py-2 rounded-lg transition duration-300 ${
+              isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-700"
+            }`}
           >
-            Submit Post
+            {isLoading ? (
+              <>
+                <FaSpinner className="animate-spin" />
+                Submitting...
+              </>
+            ) : (
+              "Submit Post"
+            )}
           </button>
         </div>
       </form>
