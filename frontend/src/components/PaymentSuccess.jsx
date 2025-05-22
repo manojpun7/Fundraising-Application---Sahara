@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import axios from "axios";
 import { assets } from "../assets/assets";
 
 const PaymentSuccess = () => {
@@ -28,6 +29,18 @@ const PaymentSuccess = () => {
     }
   }, [location.search]);
 
+  const useFetch = async () => {
+    const response = await axios.post(
+      "http://localhost:4000/app/fund/create",
+      userData
+    );
+    console.log("submitted:" + response);
+  };
+  useEffect(() => {
+    useFetch();
+  }, []);
+  console.log(userData);
+
   return (
     <div className="flex items-center justify-center min-h-screen">
       <div className="w-[300px] text-center">
@@ -41,8 +54,8 @@ const PaymentSuccess = () => {
         </p>
         <p className="mt-2 text-xl text-gray-700">Name: {userData.fullName}</p>
         <p className="text-xl text-gray-700">Email: {userData.email}</p>
-        <p className="mt-2 text-xl text-gray-700">Name: {userData.phone}</p>
-        <p className="text-xl text-gray-700">Email: {userData.message}</p>
+        <p className="mt-2 text-xl text-gray-700">Phone: {userData.phone}</p>
+        <p className="text-xl text-gray-700">Message: {userData.message}</p>
         <p className="text-xl text-gray-700"></p>
         <p className="text-xl text-gray-700 font-semibold mt-4">
           Amount Paid: Rs{userData.total_amount}

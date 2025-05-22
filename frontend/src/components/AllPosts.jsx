@@ -9,7 +9,6 @@ const AllPosts = () => {
   const fetchPosts = async () => {
     try {
       const res = await axios.get("http://localhost:4000/app/posts/fetch");
-      console.log(res);
       setPosts(res.data.fetchedPosts);
     } catch (err) {
       console.error(err);
@@ -21,10 +20,9 @@ const AllPosts = () => {
     fetchPosts();
   }, []);
 
-  console.log(posts);
   return (
-    <section className=" ">
-      <h2 className="text-[#000080] text-5xl font-bold mb-6 text-center ">
+    <section className=" bg-gray-50">
+      <h2 className="text-[#000080] text-5xl font-bold mb-6 mt-10 text-center ">
         Current Needy
       </h2>
       {error && <p className="text-center text-red-500">{error}</p>}

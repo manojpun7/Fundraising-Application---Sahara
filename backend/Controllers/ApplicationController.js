@@ -43,7 +43,6 @@ const fetchApplication = async (req, res) => {
   try {
     const fetchedApplication = await Application.find({});
 
-    console.log(fetchedApplication);
     res.json({ success: true, data: fetchedApplication });
   } catch (error) {
     console.log(error);

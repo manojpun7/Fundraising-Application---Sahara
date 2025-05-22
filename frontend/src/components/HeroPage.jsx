@@ -1,56 +1,42 @@
 import React, { useState, useEffect, useRef } from "react";
 import { assets } from "../assets/assets";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import AllPosts from "./AllPosts";
+import NumberCards from "./NumberCards";
 
 const HeroPage = () => {
-  const [numbers, setNumbers] = useState([0, 0, 0, 0, 0]);
-  const [isAnimated, setIsAnimated] = useState(false);
-
-  const cardRef = useRef(null);
+  const [topDonors, setTopDonors] = useState([]);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !isAnimated) {
-            setIsAnimated(true);
-            animateNumbers(0, [1500, 1900, 1500, 50, 3000, 2000], 2000);
+    const fetchDonors = async () => {
+      try {
+        const res = await axios.get("http://localhost:4000/app/fund/fetch");
+        const data = res.data?.data || [];
+
+        // Group and sum donations by fullName
+        const donorMap = {};
+        data.forEach((donor) => {
+          if (donorMap[donor.fullName]) {
+            donorMap[donor.fullName] += parseFloat(donor.total_amount);
+          } else {
+            donorMap[donor.fullName] = parseFloat(donor.total_amount);
           }
         });
-      },
-      { threshold: 0.5 }
-    );
 
-    if (cardRef.current) {
-      observer.observe(cardRef.current);
-    }
+        // Convert to array and sort by amount
+        const sorted = Object.entries(donorMap)
+          .map(([name, total]) => ({ name, total }))
+          .sort((a, b) => b.total - a.total);
 
-    return () => {
-      if (cardRef.current) observer.unobserve(cardRef.current);
-    };
-  }, [isAnimated]);
-
-  const animateNumbers = (start, endValues, duration) => {
-    let startTime = null;
-
-    const step = (timestamp) => {
-      if (!startTime) startTime = timestamp;
-      const progress = Math.min((timestamp - startTime) / duration, 0.7);
-
-      setNumbers(
-        endValues.map((endValue) =>
-          Math.floor(progress * (endValue - start) + start)
-        )
-      );
-
-      if (progress < 1) {
-        requestAnimationFrame(step);
+        setTopDonors(sorted);
+      } catch (error) {
+        console.error("Failed to fetch donors:", error);
       }
     };
 
-    requestAnimationFrame(step);
-  };
+    fetchDonors();
+  }, []);
 
   return (
     <div>
@@ -76,24 +62,44 @@ const HeroPage = () => {
               </button>
             </Link>
           </div>
-
-          {/* Login/Signup Button */}
-          {/* <button
-            onClick={() => setShowLogin(true)}
-            className="mt-6 px-6 py-3 bg-green-600 text-white rounded-lg text-lg font-semibold hover:bg-green-700 transition"
-          >
-            Login / Sign Up
-          </button> */}
         </div>
+        <div className="flex-col w-1/3 bg-white rounded-lg p-4 shadow-md">
+          <h1 className="text-3xl font-bold text-[#000080] mb-4 text-center border-b pb-2">
+            Top Donors
+          </h1>
 
-        <img
-          src={assets.hero_img}
-          alt="Hero Background"
-          className="w-auto h-[60%] object-cover opacity-100 pointer-events-none overflow-hidden rounded-xl m-20"
-        />
+          <div className="max-h-[300px] overflow-y-auto pr-2">
+            {topDonors.length === 0 ? (
+              <p className="text-gray-500 text-center">No donors yet</p>
+            ) : (
+              <ul className="space-y-3">
+                {topDonors.map((donor, index) => (
+                  <li
+                    key={index}
+                    className="flex justify-between items-center border-b pb-2 text-lg"
+                  >
+                    <div className="flex gap-3 items-center">
+                      <span className="text-gray-500 font-medium">
+                        {index + 1}.
+                      </span>
+                      <span className="font-semibold text-[#003366]">
+                        {donor.name}
+                      </span>
+                    </div>
+                    <span className="text-[#007BFF] font-bold">
+                      Rs. {donor.total}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
       </section>
 
       <AllPosts />
+
+      <NumberCards />
 
       {/* <section className="bg-gray-50 py-16 px-4">
         <div className="container mx-auto text-center">
@@ -149,42 +155,16 @@ const HeroPage = () => {
           </div>
         </div>
       </section> */}
-
-      {/* Section with Cards */}
-      <section className="bg-gray-50">
-        <div
-          className="grid grid-cols-1 md:grid-cols-3 gap-8 py-10 px-32"
-          ref={cardRef}
-        >
-          {[
-            { img: assets.form, text: "Beneficiaries Impacted" },
-            { img: assets.money_bag, text: "Aid Generated" },
-            { img: assets.patient, text: "Blood Distributed" },
-            // { img: assets.social_media, text: "Engaged Volunteer" },
-            { img: assets.success, text: "Active Doner" },
-            { img: assets.delivery, text: "Food Distributed" },
-          ].map((card, index) => (
-            <div
-              key={index}
-              className="flex flex-col justify-center items-center border bg-white p-4"
-            >
-              <img
-                src={card.img}
-                alt={card.text}
-                className="w-20 h-auto rounded-lg p-2"
-              />
-              <p className="text-5xl p-2 text-[#007BFF]">
-                {index === 0
-                  ? `${numbers[index]}+`
-                  : `${numbers[index].toLocaleString()}+`}
-              </p>
-              <p className="text-2xl p-2">{card.text}</p>
-            </div>
-          ))}
-        </div>
-      </section>
     </div>
   );
 };
 
 export default HeroPage;
+
+{
+  /* <img
+          src={assets.hero_img}
+          alt="Hero Background"
+          className="w-auto h-[60%] object-cover opacity-100 pointer-events-none overflow-hidden rounded-xl m-20"
+        /> */
+}

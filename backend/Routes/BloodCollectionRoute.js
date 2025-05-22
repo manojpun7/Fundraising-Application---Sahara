@@ -1,14 +1,13 @@
-import express from "express"
+import express from "express";
 
+import {
+  BloodCollectionController,
+  fetchBloodCollection,
+} from "../Controllers/BloodCollectionController.js";
 
-import { BloodCollectionController,fetchBloodCollection } from "../Controllers/BloodCollectionController.js"
+const BloodCollectionRouter = express.Router();
 
-
-const BloodCollectionRouter =express.Router()
-
-BloodCollectionRouter.post('/donate',BloodCollectionController)
-BloodCollectionRouter.get('/fetch',fetchBloodCollection)
-
-
+BloodCollectionRouter.post("/donate", BloodCollectionController);
+BloodCollectionRouter.get("/fetch", fetchBloodCollection);
 
 export default BloodCollectionRouter;

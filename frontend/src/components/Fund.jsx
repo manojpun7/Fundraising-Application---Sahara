@@ -53,7 +53,7 @@ const Fund = () => {
       email: formData.email,
       phone: formData.phone,
       message: formData.message,
-      total_amount:formData.total_amount
+      total_amount: formData.total_amount,
     };
     const encodedUser = btoa(JSON.stringify(userPayload));
 
@@ -66,7 +66,6 @@ const Fund = () => {
       signature,
       success_url: finalSuccessURL,
     }));
-    
   }, [
     formData.total_amount,
     formData.fullName,

@@ -9,6 +9,7 @@ import helpBotRouter from "./Routes/HelpBotRoute.js";
 
 import { dbConnect } from "./Db/db.js";
 import CreatePostRouter from "./Routes/CreatePostRoute.js";
+import CreateFundDonationRouter from "./Routes/FundDonationRoute.js";
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use("/app/blood", BloodCollectionRouter);
 app.use("/app/fc-collection", FCCollectionRouter);
 app.use("/app/posts", CreatePostRouter);
 app.use("/app/helpbot", helpBotRouter);
+app.use("/app/fund", CreateFundDonationRouter);
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);

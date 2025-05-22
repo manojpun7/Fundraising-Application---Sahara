@@ -19,15 +19,7 @@ const BloodCollectionController = async (req, res) => {
         .json({ success: false, message: "All fields are required" });
     }
 
-    console.log(
-      fullname,
-      phonenumber,
-      email,
-      location,
-      gender,
-      age,
-      bloodgroup
-    );
+
     const bloodCollection = new BloodCollection({
       fullname,
       phonenumber,
@@ -57,7 +49,6 @@ const fetchBloodCollection = async (req, res) => {
   try {
     const fetchedBloodCollection = await BloodCollection.find({});
 
-    console.log(fetchedBloodCollection);
     res.json({ success: true, data: fetchedBloodCollection });
   } catch (error) {
     console.log(error);
