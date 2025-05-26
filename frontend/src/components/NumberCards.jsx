@@ -1,20 +1,19 @@
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { assets } from "../assets/assets";
+import useStore from "../StoreZustand/store";
 
 const NumberCards = () => {
   const url = "http://localhost:4000/app/blood/fetch";
   const [bloodDonation, setBloodDonation] = useState([]);
   const [foodAndCloth, setFoodAndCloth] = useState([]);
   const [fund, setFund] = useState([]);
-  const [totalAmount, setTotalAmount] = useState();
-
+  const { topDonors } = useStore();
   const [numbers, setNumbers] = useState([0, 0, 0, 0, 0]);
   const [isAnimated, setIsAnimated] = useState(false);
 
   const cardRef = useRef(null);
 
-  //fetching data from blood collection
   useEffect(() => {
     const fetchBloodDonations = async () => {
       try {
@@ -29,11 +28,8 @@ const NumberCards = () => {
     fetchBloodDonations();
   }, []);
 
-  useEffect(() => {
-    // console.log("Blood Donations length after update:", bloodDonation);
-  }, [bloodDonation]);
+  useEffect(() => {}, [bloodDonation]);
 
-  //fetching data from food and cloth
   useEffect(() => {
     const fetchFoodAndClothDonations = async () => {
       try {
@@ -51,11 +47,8 @@ const NumberCards = () => {
     fetchFoodAndClothDonations();
   }, []);
 
-  useEffect(() => {
-    // console.log("Food and Cloth Donations length after update:", foodAndCloth);
-  }, [foodAndCloth]);
+  useEffect(() => {}, [foodAndCloth]);
 
-  //fetching fund for the UI update from the backend
   useEffect(() => {
     const fetchFund = async () => {
       try {
@@ -63,13 +56,9 @@ const NumberCards = () => {
           "http://localhost:4000/app/fund/fetch"
         );
         console.log(responseFetchFund);
-        const data = responseFetchFund.data
-        console.log(data)
-      
-
-  
+        const data = responseFetchFund.data;
+        console.log(data);
       } catch (err) {
-      
         console.error(err);
       }
     };
@@ -78,7 +67,6 @@ const NumberCards = () => {
   }, []);
 
   useEffect(() => {
-    console.log("Fund data aayo hai ta:", fund);
   }, [fund]);
 
   useEffect(() => {
@@ -94,8 +82,8 @@ const NumberCards = () => {
             setIsAnimated(true);
             animateNumbers(
               0,
-              [1500, 1900, bloodDonation, 50, foodAndCloth],
-              2000
+              [1500, 1900, bloodDonation, topDonors.length, foodAndCloth],
+              3000
             );
           }
         });
@@ -110,14 +98,14 @@ const NumberCards = () => {
     return () => {
       if (cardRef.current) observer.unobserve(cardRef.current);
     };
-  }, [isAnimated, bloodDonation, foodAndCloth]);
+  }, [isAnimated, bloodDonation, foodAndCloth, topDonors.length]);
 
   const animateNumbers = (start, endValues, duration) => {
     let startTime = null;
 
     const step = (timestamp) => {
       if (!startTime) startTime = timestamp;
-      const progress = Math.min((timestamp - startTime) / duration, 1); // was 0.7
+      const progress = Math.min((timestamp - startTime) / duration, 1);
 
       setNumbers(
         endValues.map((endValue) =>
