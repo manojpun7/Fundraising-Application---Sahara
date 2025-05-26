@@ -11,12 +11,14 @@ import Foodandcloth from "./components/Foodandcloth";
 import Home from "./pages/Home";
 import PaymentSuccess from "./components/PaymentSuccess";
 import PostFund from "./pages/PostFund";
+import PaymentFailure from "./components/PaymentFailure";
 
 function App() {
   return (
     <div>
       <Routes>
         <Route path="/paymentsuccess" element={<PaymentSuccess />} />
+        <Route path="/paymentfailure" element={<PaymentFailure />} />
       </Routes>
 
       <Navbar />
@@ -31,7 +33,7 @@ function App() {
           <Route path="/application" element={<Application />} />
           <Route path="/help" element={<Help />} />
           <Route path="/goals" element={<OurGoals />} />
-          <Route path="/post-fund/:id" element={<PostFund/>} />
+          <Route path="/post-fund/:id" element={<PostFund />} />
         </Routes>
       </div>
     </div>

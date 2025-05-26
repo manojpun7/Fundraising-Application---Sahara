@@ -55,9 +55,7 @@ const NumberCards = () => {
         const responseFetchFund = await axios.get(
           "http://localhost:4000/app/fund/fetch"
         );
-        console.log(responseFetchFund);
         const data = responseFetchFund.data;
-        console.log(data);
       } catch (err) {
         console.error(err);
       }
