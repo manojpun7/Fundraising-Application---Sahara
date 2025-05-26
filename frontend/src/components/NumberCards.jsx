@@ -68,7 +68,6 @@ const NumberCards = () => {
 
   useEffect(() => {}, [fund]);
 
-  console.log("total amount", totalAmount);
 
   useEffect(() => {
     const observer = new IntersectionObserver(

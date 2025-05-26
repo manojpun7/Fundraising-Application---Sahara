@@ -10,6 +10,7 @@ import Blood from "./components/Blood";
 import Foodandcloth from "./components/Foodandcloth";
 import Home from "./pages/Home";
 import PaymentSuccess from "./components/PaymentSuccess";
+import PostFund from "./pages/PostFund";
 
 function App() {
   return (
@@ -24,12 +25,13 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/donation" element={<Donation />} />
-          <Route path="/donation/fund" element={<Fund />} />
+          <Route path="/donation/fund/" element={<Fund />} />
           <Route path="/donation/blood" element={<Blood />} />
           <Route path="/donation/foodandcloth" element={<Foodandcloth />} />
           <Route path="/application" element={<Application />} />
           <Route path="/help" element={<Help />} />
           <Route path="/goals" element={<OurGoals />} />
+          <Route path="/post-fund/:id" element={<PostFund/>} />
         </Routes>
       </div>
     </div>

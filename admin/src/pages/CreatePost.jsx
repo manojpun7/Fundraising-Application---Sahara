@@ -132,6 +132,7 @@ const CreatePost = () => {
             onChange={handleChange}
             className="w-full"
             ref={fileInputRef}
+            required
           />
         </div>
 

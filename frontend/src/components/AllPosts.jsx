@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import PostCard from "./PostCard";
+import { Link } from "react-router-dom";
 
 const AllPosts = () => {
   const [posts, setPosts] = useState([]);
@@ -18,7 +19,7 @@ const AllPosts = () => {
 
   useEffect(() => {
     fetchPosts();
-  }, []);
+  }, [posts]);
 
   return (
     <section className=" bg-gray-50">
@@ -30,10 +31,13 @@ const AllPosts = () => {
       <div className="w-full px-4 sm:px-6 lg:px-8 ">
         <div className="flex flex-wrap gap-6 justify-center ">
           {posts.map((post) => (
-            <div key={post._id} className="w-full sm:w-[48%] lg:w-[30%]">
+            <Link
+              to={`/post-fund/${post._id}`}
+              key={post._id}
+              className="w-full sm:w-[48%] lg:w-[30%]"
+            >
               <PostCard post={post} />
-              
-            </div>
+            </Link>
           ))}
         </div>
       </div>

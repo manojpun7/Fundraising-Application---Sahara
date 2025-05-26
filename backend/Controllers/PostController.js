@@ -15,7 +15,6 @@ const createPost = async (req, res) => {
     let imageUrl = "";
 
     if (image) {
-      // Upload base64 image to Cloudinary
       const uploadRes = await cloudinary.uploader.upload(image, {
         folder: "campaign_posts",
       });
@@ -55,4 +54,60 @@ const fetchPosts = async (req, res) => {
   }
 };
 
-export { createPost, fetchPosts };
+const fetchSinglePost = async (req, res) => {
+  try {
+    const postId = req.params.id;
+    const post = await Post.findById(postId);
+
+    if (!post) {
+      return res.status(404).json({
+        success: false,
+        message: "Post not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      post: post,
+    });
+
+  } catch (err) {
+    console.error("Error fetching post:", err);
+    res.status(500).json({
+      success: false,
+      message: "Server error in Post controller",
+    });
+  }
+};
+
+const addDonorToPost = async (req, res) => {
+  try {
+    const { postId } = req.params;
+    const {fullName, total_amount } = req.body;
+
+    if (!fullName || !total_amount) {
+      return res.status(400).json({ error: "Name and amount are required" });
+    }
+
+    const post = await Post.findById(postId);
+
+    if (!post) {
+      return res.status(404).json({ error: "Post not found" });
+    }
+
+    post.donors.push({ fullName, total_amount });
+    post.totalDonatedAmount += total_amount;
+
+    await post.save();
+
+    res.status(200).json({
+      message: "Donation recorded successfully.",
+      post,
+    });
+  } catch (error) {
+    console.error("Error donating:", error);
+    res.status(500).json({ error: "Internal Server Error in AddDonorToPost controller" });
+  }
+};
+
+export { createPost, fetchPosts, addDonorToPost, fetchSinglePost };
