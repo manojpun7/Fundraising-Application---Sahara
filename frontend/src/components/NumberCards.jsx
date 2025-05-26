@@ -8,7 +8,7 @@ const NumberCards = () => {
   const [bloodDonation, setBloodDonation] = useState([]);
   const [foodAndCloth, setFoodAndCloth] = useState([]);
   const [fund, setFund] = useState([]);
-  const { topDonors } = useStore();
+  const { topDonors, totalAmount } = useStore();
   const [numbers, setNumbers] = useState([0, 0, 0, 0, 0]);
   const [isAnimated, setIsAnimated] = useState(false);
 
@@ -66,8 +66,9 @@ const NumberCards = () => {
     fetchFund();
   }, []);
 
-  useEffect(() => {
-  }, [fund]);
+  useEffect(() => {}, [fund]);
+
+  console.log("total amount", totalAmount);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -82,7 +83,7 @@ const NumberCards = () => {
             setIsAnimated(true);
             animateNumbers(
               0,
-              [1500, 1900, bloodDonation, topDonors.length, foodAndCloth],
+              [totalAmount, bloodDonation, topDonors.length, foodAndCloth],
               3000
             );
           }
@@ -98,7 +99,7 @@ const NumberCards = () => {
     return () => {
       if (cardRef.current) observer.unobserve(cardRef.current);
     };
-  }, [isAnimated, bloodDonation, foodAndCloth, topDonors.length]);
+  }, [isAnimated, bloodDonation, foodAndCloth, topDonors.length, totalAmount]);
 
   const animateNumbers = (start, endValues, duration) => {
     let startTime = null;
@@ -129,7 +130,7 @@ const NumberCards = () => {
           ref={cardRef}
         >
           {[
-            { img: assets.form, text: "Beneficiaries Impacted" },
+            // { img: assets.form, text: "Beneficiaries Impacted" },
             { img: assets.money_bag, text: "Aid Generated" },
             { img: assets.patient, text: "Blood Distributed" },
             { img: assets.success, text: "Active Doner" },
