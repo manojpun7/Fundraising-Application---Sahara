@@ -96,7 +96,7 @@ const addDonorToPost = async (req, res) => {
     }
 
     post.donors.push({ fullName, total_amount });
-    post.totalDonatedAmount += total_amount;
+    post.totalDonatedAmount += Number(total_amount);
 
     await post.save();
 
