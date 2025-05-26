@@ -1,42 +1,18 @@
-import React, { useState, useEffect, useRef } from "react";
-import { assets } from "../assets/assets";
+import { useEffect } from "react";
+
 import { Link } from "react-router-dom";
-import axios from "axios";
+
 import AllPosts from "./AllPosts";
 import NumberCards from "./NumberCards";
+import useStore from "../StoreZustand/store";
+import { create } from "zustand";
 
 const HeroPage = () => {
-  const [topDonors, setTopDonors] = useState([]);
+  const { topDonors, isLoading, error, fetchTopDonors } = useStore();
 
   useEffect(() => {
-    const fetchDonors = async () => {
-      try {
-        const res = await axios.get("http://localhost:4000/app/fund/fetch");
-        const data = res.data?.data || [];
-
-        // Group and sum donations by fullName
-        const donorMap = {};
-        data.forEach((donor) => {
-          if (donorMap[donor.fullName]) {
-            donorMap[donor.fullName] += parseFloat(donor.total_amount);
-          } else {
-            donorMap[donor.fullName] = parseFloat(donor.total_amount);
-          }
-        });
-
-        // Convert to array and sort by amount
-        const sorted = Object.entries(donorMap)
-          .map(([name, total]) => ({ name, total }))
-          .sort((a, b) => b.total - a.total);
-
-        setTopDonors(sorted);
-      } catch (error) {
-        console.error("Failed to fetch donors:", error);
-      }
-    };
-
-    fetchDonors();
-  }, []);
+    fetchTopDonors();
+  }, [fetchTopDonors]);
 
   return (
     <div>
@@ -68,32 +44,38 @@ const HeroPage = () => {
             Top Donors
           </h1>
 
-          <div className="max-h-[300px] overflow-y-auto pr-2">
-            {topDonors.length === 0 ? (
-              <p className="text-gray-500 text-center">No donors yet</p>
-            ) : (
-              <ul className="space-y-3">
-                {topDonors.map((donor, index) => (
-                  <li
-                    key={index}
-                    className="flex justify-between items-center border-b pb-2 text-lg"
-                  >
-                    <div className="flex gap-3 items-center">
-                      <span className="text-gray-500 font-medium">
-                        {index + 1}.
+          {isLoading ? (
+            <p className="text-center">Loading donors...</p>
+          ) : error ? (
+            <p className="text-red-500 text-center">Error: {error}</p>
+          ) : (
+            <div className="max-h-[300px] overflow-y-auto pr-2">
+              {topDonors.length === 0 ? (
+                <p className="text-gray-500 text-center">No donors yet</p>
+              ) : (
+                <ul className="space-y-3">
+                  {topDonors.map((donor, index) => (
+                    <li
+                      key={index}
+                      className="flex justify-between items-center border-b pb-2 text-lg"
+                    >
+                      <div className="flex gap-3 items-center">
+                        <span className="text-gray-500 font-medium">
+                          {index + 1}.
+                        </span>
+                        <span className="font-semibold text-[#003366]">
+                          {donor.name}
+                        </span>
+                      </div>
+                      <span className="text-[#007BFF] font-bold">
+                        Rs. {donor.total}
                       </span>
-                      <span className="font-semibold text-[#003366]">
-                        {donor.name}
-                      </span>
-                    </div>
-                    <span className="text-[#007BFF] font-bold">
-                      Rs. {donor.total}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )}
         </div>
       </section>
 
