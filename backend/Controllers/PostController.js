@@ -50,7 +50,7 @@ const fetchPosts = async (req, res) => {
     res.status(200).json({ success: true, fetchedPosts: data });
   } catch (err) {
     console.error("Error fetching posts:", err);
-    res.status(500).json({ success: false, message: "Server error" });
+    res.status(500).json({ success: false, message: " fetchPosts Server error" });
   }
 };
 
@@ -75,7 +75,7 @@ const fetchSinglePost = async (req, res) => {
     console.error("Error fetching post:", err);
     res.status(500).json({
       success: false,
-      message: "Server error in Post controller",
+      message: "fetchSinglePost Server error in Post controller",
     });
   }
 };
@@ -106,7 +106,7 @@ const addDonorToPost = async (req, res) => {
     });
   } catch (error) {
     console.error("Error donating:", error);
-    res.status(500).json({ error: "Internal Server Error in AddDonorToPost controller" });
+    res.status(500).json({ error: "addDonorToPost Internal Server Error in AddDonorToPost controller" });
   }
 };
 

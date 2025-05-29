@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom"; 
 
 const PostCard = ({ post }) => {
   const [countdown, setCountdown] = useState("");
   const [progressPercent, setProgressPercent] = useState(0);
+  const [isTargetReached, setIsTargetReached] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -32,6 +34,7 @@ const PostCard = ({ post }) => {
   useEffect(() => {
     const percent = (post.totalDonatedAmount / post.targetAmount) * 100;
     setProgressPercent(percent.toFixed(2));
+    setIsTargetReached(post.totalDonatedAmount >= post.targetAmount);
   }, [post.totalDonatedAmount, post.targetAmount]);
 
   return (
@@ -75,10 +78,27 @@ const PostCard = ({ post }) => {
         </p>
       </div>
 
+      {/* 🎯 Target Reached Message */}
+      {isTargetReached && (
+        <div className="text-green-600 font-bold text-lg mt-4 bg-green-100 p-2 rounded shadow-inner text-center">
+          🎯 Target Reached
+        </div>
+      )}
+
+      {/* ✅ Donate Button / Link */}
       <div className="block text-left">
-        <button className="mt-4 px-6 py-3 bg-[#007BFF] text-white rounded-lg hover:bg-[#0056b3] transition duration-300 shadow-md hover:shadow-lg">
-          Donate Now
-        </button>
+        <Link to={isTargetReached ? "#" : `/donate/${post._id}`}>
+          <button
+            className={`mt-4 px-6 py-3 rounded-lg transition duration-300 shadow-md ${
+              isTargetReached
+                ? "bg-gray-400 text-white cursor-not-allowed"
+                : "bg-[#007BFF] text-white hover:bg-[#0056b3] hover:shadow-lg"
+            }`}
+            disabled={isTargetReached}
+          >
+            Donate Now
+          </button>
+        </Link>
       </div>
     </div>
   );

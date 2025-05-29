@@ -7,7 +7,7 @@ const PostModel = new mongoose.Schema(
     targetAmount: { type: Number, required: true },
     totalDonatedAmount: { type: Number, default: 0 },
     deadline: { type: Date, required: true },
-    imageUrl: { type: String, required: false },
+    imageUrl: { type: String, required: true },
     donors: [
       {
         fullName: { type: String, required: true },

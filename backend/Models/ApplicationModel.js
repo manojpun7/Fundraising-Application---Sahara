@@ -32,6 +32,7 @@ const ApplicationModel = new mongoose.Schema({
     enum: ["pending", "approved", "rejected"],
     default: "pending",
   },
+  imageUrl: { type: String, required: true },
 });
 
 export const Application = mongoose.model("Application", ApplicationModel);

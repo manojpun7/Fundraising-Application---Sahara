@@ -3,11 +3,10 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { assets } from "../assets/assets";
-import emailjs from '@emailjs/browser';
+import emailjs from "@emailjs/browser";
 
 const Application = () => {
   const form = useRef();
-  
 
   const [isLoading, setIsLoading] = useState(false);
   const url = "http://localhost:4000/app/application/submission";
@@ -18,54 +17,13 @@ const Application = () => {
     fundamount: "",
     reason: "",
     location: "",
+    image: "",
   });
 
   const [numbers, setNumbers] = useState([0, 0]);
   const [isAnimated, setIsAnimated] = useState(false);
   const counterRef = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !isAnimated) {
-            setIsAnimated(true);
-            animateNumbers(0, [1000, 10000], 2000);
-          }
-        });
-      },
-      { threshold: 0.5 }
-    );
-
-    if (counterRef.current) {
-      observer.observe(counterRef.current);
-    }
-
-    return () => {
-      if (counterRef.current) observer.unobserve(counterRef.current);
-    };
-  }, [isAnimated]);
-
-  const animateNumbers = (start, endValues, duration) => {
-    let startTime = null;
-
-    const step = (timestamp) => {
-      if (!startTime) startTime = timestamp;
-      const progress = Math.min((timestamp - startTime) / duration, 0.4);
-
-      setNumbers(
-        endValues.map((endValue) =>
-          Math.floor(progress * (endValue - start) + start)
-        )
-      );
-
-      if (progress < 1) {
-        requestAnimationFrame(step);
-      }
-    };
-
-    requestAnimationFrame(step);
-  };
+  const fileInputRef = useRef(null);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -74,24 +32,38 @@ const Application = () => {
       [name]: value,
     }));
   };
+  const handleChange = async (e) => {
+    const { name, value, files } = e.target;
+    if (name === "image" && files.length > 0) {
+      const file = files[0];
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setApplicationData((prev) => ({
+          ...prev,
+          image: reader.result,
+        }));
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setApplicationData((prev) => ({ ...prev, [name]: value }));
+    }
+  };
 
   const handleSubmit = async (e) => {
-
-    // const sendEmail = (e) => {
-      e.preventDefault();
-  
-      emailjs
-        .sendForm('service_jv7dcxo', 'template_8hu3x5e', form.current, {
-          publicKey: '07R2Ni316qFS5eUzQ',
-        })
-        .then(  
-          () => {
-            console.log('SUCCESS!');
-          },
-          (error) => {
-            console.log('FAILED...', error.text);
-          },
-        );
+    e.preventDefault();
+    //this code is for sending data through email js i will use in admin side !!!!!!!
+    emailjs
+      .sendForm("service_jv7dcxo", "template_8hu3x5e", form.current, {
+        publicKey: "07R2Ni316qFS5eUzQ",
+      })
+      .then(
+        () => {
+          console.log("SUCCESS!");
+        },
+        (error) => {
+          console.log("FAILED...", error.text);
+        }
+      );
     // };
 
     e.preventDefault();
@@ -111,7 +83,11 @@ const Application = () => {
         fundamount: "",
         reason: "",
         location: "",
+        image: "",
       });
+      if (fileInputRef.current) {
+        fileInputRef.current.value = null;
+      }
     } catch (error) {
       toast.error("Failed to submit the application. Please try again.", {
         position: "top-right",
@@ -136,28 +112,9 @@ const Application = () => {
             confidential and used solely for the purpose of providing
             assistance.
           </p>
-          <div
-            className="flex justify-between items-center gap-8 py-10"
-            ref={counterRef}
-          >
-            <div className="flex flex-col justify-center items-center w-full lg:w-5/12">
-              <img
-                src={assets.form}
-                alt="Image 1"
-                className="w-20 h-auto rounded-lg p-2"
-              />
-              <p className="text-5xl p-2 text-[#007BFF]">{numbers[0]}+</p>
-              <p className="text-2xl p-2">Beneficiaries Impacted</p>
-            </div>
-            <div className="flex flex-col justify-center items-center w-full lg:w-5/12">
-              <img
-                src={assets.money_bag}
-                alt="Image 2"
-                className="w-20 h-auto rounded-lg p-2"
-              />
-              <p className="text-5xl p-2 text-[#007BFF]">Rs {numbers[1]}+</p>
-              <p className="text-2xl p-2">Aid Distributed</p>
-            </div>
+          <div className="flex justify-between items-center gap-8 py-10">
+            <div className="flex flex-col justify-center items-center w-full lg:w-5/12"></div>
+            <div className="flex flex-col justify-center items-center w-full lg:w-5/12"></div>
           </div>
         </div>
 
@@ -167,7 +124,6 @@ const Application = () => {
             Apply for Assistance
           </h2>
 
-          
           <form ref={form} onSubmit={handleSubmit}>
             <input
               type="text"
@@ -223,9 +179,20 @@ const Application = () => {
               pattern="[0-9]{10}"
               required
             />
+
+            <label className="block mb-1 font-medium">Upload Document</label>
+            <input
+              type="file"
+              name="image"
+              accept="image/*"
+              onChange={handleChange}
+              className="w-full mb-5"
+              ref={fileInputRef}
+              required
+            />
+
             <button
               type="submit"
-              // onClick={sendEmail}
               className="w-full py-3 bg-[#007BFF] text-white rounded-lg hover:bg-[#0056b3] transition duration-300"
               disabled={isLoading}
             >

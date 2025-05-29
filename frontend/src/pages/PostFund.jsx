@@ -26,7 +26,6 @@ const PostFund = () => {
     secret: "8gBm/:&EnhH.1/q",
   });
 
-
   const generateSignature = (
     total_amount,
     transaction_uuid,
@@ -75,7 +74,6 @@ const PostFund = () => {
         `http://localhost:4000/app/posts/fetch-single-post/${id}`
       );
       setSinglePost(res.data.post);
-     
     } catch (err) {
       console.error(err);
     }
@@ -84,6 +82,7 @@ const PostFund = () => {
   useEffect(() => {
     fetchSinglePost();
   }, [id]);
+  console.log(singlePost.donors)
 
   return (
     <>
@@ -223,6 +222,26 @@ const PostFund = () => {
               pay via Esewa
             </button>
           </form>
+          {singlePost.donors && singlePost.donors.length > 0 && (
+            <div className="mt-8 bg-gray-50 p-4 rounded-lg shadow-inner">
+              <h3 className="text-2xl font-semibold text-[#000080] mb-3">
+                Recent Donors ({singlePost.donors.length})
+              </h3>
+              <div className="max-h-48 overflow-y-auto border border-gray-200 rounded-md p-2">
+                <ul className="space-y-1">
+                  {singlePost.donors.map((donor, index) => (
+                    <li
+                      key={index}
+                      className="flex justify-between text-gray-700 border-b py-1 px-2 last:border-none"
+                    >
+                      <span>{donor.fullName}</span>
+                      <span className="font-medium">Rs {donor.total_amount}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </>

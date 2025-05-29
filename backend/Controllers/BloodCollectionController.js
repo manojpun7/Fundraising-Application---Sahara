@@ -41,7 +41,7 @@ const BloodCollectionController = async (req, res) => {
     console.error("Error during application submiting:", error);
     return res
       .status(500)
-      .json({ success: false, message: "Internal server error" });
+      .json({ success: false, message: "BloodCollectionController Internal server error" });
   }
 };
 
@@ -52,7 +52,7 @@ const fetchBloodCollection = async (req, res) => {
     res.json({ success: true, data: fetchedBloodCollection });
   } catch (error) {
     console.log(error);
-    res.json({ success: false, message: "Error" });
+    res.json({ success: false, message: "fetchBloodCollection Error" });
   }
 };
 

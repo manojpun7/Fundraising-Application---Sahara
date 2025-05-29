@@ -3,7 +3,7 @@ import axios from "axios";
 const helpBotController = async (req, res) => {
   const { question } = req.body;
   console.log(question);
-  
+
   const prompt = `
   your name is Eva.
   I have built a fundraising platform named "Sahara" with the motto "By the People, For the People."  
@@ -36,6 +36,8 @@ const helpBotController = async (req, res) => {
 
     let answer = response.data.candidates[0].content.parts[0].text;
     return res.status(200).json({ success: true, data: answer });
-  } catch (error) {}
+  } catch (error) {
+    res.status(500).json({ message: "helpBotController" });
+  }
 };
 export { helpBotController };

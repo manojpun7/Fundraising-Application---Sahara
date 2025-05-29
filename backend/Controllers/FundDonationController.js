@@ -25,7 +25,7 @@ export const CreateFundController = async (req, res) => {
       });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Failed to save donation." });
+    res.status(500).json({ error: "CreateFundController Failed to save donation." });
   }
 };
 
@@ -36,6 +36,6 @@ export const fetchFundCollection = async (req, res) => {
     
   } catch (error) {
     console.error(error);
-    res.status(500).json({ success: false, message: "Error fetching data." });
+    res.status(500).json({ success: false, message: " fetchFundCollection Error fetching data." });
   }
 };
