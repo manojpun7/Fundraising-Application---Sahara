@@ -39,7 +39,7 @@ const CreatePost = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:4000/app/posts/create",
+        "https://fundraising-application-sahara.onrender.com/app/posts/create",
         formData
       );
 

@@ -3,7 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 const Applications = () => {
-  const url = "http://localhost:4000/app/application/fetch";
+  const url = "https://fundraising-application-sahara.onrender.com/app/application/fetch";
   const [applications, setApplications] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -26,7 +26,7 @@ const Applications = () => {
   const updateStatus = async (id, status) => {
     try {
       const response = await axios.patch(
-        `http://localhost:4000/app/application/update-status/${id}`,
+        `https://fundraising-application-sahara.onrender.com/app/application/update-status/${id}`,
         { status }
       );
       if (response.data.success) {
@@ -48,7 +48,7 @@ const Applications = () => {
 
     try {
       const response = await axios.delete(
-        `http://localhost:4000/app/application/delete/${id}`
+        `https://fundraising-application-sahara.onrender.com/app/application/delete/${id}`
       );
       if (response.data.success) {
         setApplications((prev) => prev.filter((app) => app._id !== id));

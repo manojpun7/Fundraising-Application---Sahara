@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const BloodDonation = () => {
-  const url = "http://localhost:4000/app/blood/fetch"; // API endpoint
+  const url = "https://fundraising-application-sahara.onrender.com/app/blood/fetch"; // API endpoint
   const [donations, setDonations] = useState([]);
   const [error, setError] = useState(null);
 

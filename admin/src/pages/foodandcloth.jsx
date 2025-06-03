@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const FoodAndCloth = () => {
-  const url = "http://localhost:4000/app/fc-collection/fetch";
+  const url = "https://fundraising-application-sahara.onrender.com/app/fc-collection/fetch";
   const [donations, setDonations] = useState([]);
   const [error, setError] = useState(null);
 
