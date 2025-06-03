@@ -48,7 +48,7 @@ const PostFund = () => {
       formData.secret
     );
 
-    const baseSuccessURL = "http://localhost:5173/paymentsuccess";
+    const baseSuccessURL = "https://sahara-frontend.onrender.com//paymentsuccess";
     const userPayload = {
       fullName: formData.fullName,
       total_amount: formData.total_amount,
