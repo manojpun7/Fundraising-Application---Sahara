@@ -4,7 +4,7 @@ import { assets } from "../assets/assets";
 import useStore from "../StoreZustand/store";
 
 const NumberCards = () => {
-  const url = "http://localhost:4000/app/blood/fetch";
+  const url = "https://fundraising-application-sahara.onrender.com/app/blood/fetch";
   const [bloodDonation, setBloodDonation] = useState([]);
   const [foodAndCloth, setFoodAndCloth] = useState([]);
   const [fund, setFund] = useState([]);
@@ -34,7 +34,7 @@ const NumberCards = () => {
     const fetchFoodAndClothDonations = async () => {
       try {
         const responseFoodAndCloth = await axios.get(
-          "http://localhost:4000/app/fc-collection/fetch"
+          "https://fundraising-application-sahara.onrender.com/app/fc-collection/fetch"
         );
 
         setFoodAndCloth(responseFoodAndCloth.data.data.length);
@@ -53,7 +53,7 @@ const NumberCards = () => {
     const fetchFund = async () => {
       try {
         const responseFetchFund = await axios.get(
-          "http://localhost:4000/app/fund/fetch"
+          "https://fundraising-application-sahara.onrender.com/app/fund/fetch"
         );
         const data = responseFetchFund.data;
       } catch (err) {

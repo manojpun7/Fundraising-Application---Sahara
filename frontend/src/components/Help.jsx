@@ -39,7 +39,7 @@ const Help = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:4000/app/helpbot/bot",
+        "https://fundraising-application-sahara.onrender.com/app/helpbot/bot",
         {
           question: message,
         }

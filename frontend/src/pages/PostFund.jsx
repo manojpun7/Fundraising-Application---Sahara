@@ -71,7 +71,7 @@ const PostFund = () => {
   const fetchSinglePost = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:4000/app/posts/fetch-single-post/${id}`
+        `https://fundraising-application-sahara.onrender.com/app/posts/fetch-single-post/${id}`
       );
       setSinglePost(res.data.post);
     } catch (err) {

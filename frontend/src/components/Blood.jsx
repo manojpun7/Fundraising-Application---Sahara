@@ -15,7 +15,7 @@ const Blood = () => {
     email: "",
   });
 
-  const url = "http://localhost:4000/app/blood/donate";
+  const url = "https://fundraising-application-sahara.onrender.com/app/blood/donate";
   const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange = (e) => {

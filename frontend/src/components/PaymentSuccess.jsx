@@ -38,7 +38,7 @@ const PaymentSuccess = () => {
           !userData.message
         ) {
           const response = await axios.post(
-            `http://localhost:4000/app/posts/add-donor-to-post/${userData.postId}`,
+            `https://fundraising-application-sahara.onrender.com/app/posts/add-donor-to-post/${userData.postId}`,
             userData
           );
           console.log("Donor to post submitted:", response.data);
@@ -50,7 +50,7 @@ const PaymentSuccess = () => {
           userData.total_amount
         ) {
           const response = await axios.post(
-            "http://localhost:4000/app/fund/create",
+            "https://fundraising-application-sahara.onrender.com/app/fund/create",
             userData
           );
           console.log("Fund submission successful:", response.data);

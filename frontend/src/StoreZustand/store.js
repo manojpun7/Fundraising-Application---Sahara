@@ -10,7 +10,7 @@ const useStore = create((set) => ({
   fetchTopDonors: async () => {
     try {
       set({ isLoading: true, error: null });
-      const res = await axios.get("http://localhost:4000/app/fund/fetch");
+      const res = await axios.get("https://fundraising-application-sahara.onrender.com/app/fund/fetch");
       const data = res.data?.data || [];
 
       let sumTotal = 0;

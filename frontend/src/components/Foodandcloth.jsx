@@ -12,7 +12,7 @@ const FoodAndCloth = () => {
     description: "",
     location: "",
   });
-  const url = "http://localhost:4000/app/fc-collection/donate";
+  const url = "https://fundraising-application-sahara.onrender.com/app/fc-collection/donate";
   const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange = (e) => {

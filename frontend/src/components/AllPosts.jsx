@@ -11,7 +11,7 @@ const AllPosts = () => {
   const fetchPosts = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("http://localhost:4000/app/posts/fetch");
+      const res = await axios.get("https://fundraising-application-sahara.onrender.com/app/posts/fetch");
       if (res.data && res.data.fetchedPosts) {
         setPosts(res.data.fetchedPosts);
       } else {

@@ -9,7 +9,7 @@ const Application = () => {
   const form = useRef();
 
   const [isLoading, setIsLoading] = useState(false);
-  const url = "http://localhost:4000/app/application/submission";
+  const url = "https://fundraising-application-sahara.onrender.com/app/application/submission";
   const [applicationData, setApplicationData] = useState({
     fullname: "",
     email: "",
