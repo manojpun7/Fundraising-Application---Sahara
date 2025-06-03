@@ -16,8 +16,8 @@ const Fund = () => {
     product_service_charge: "0",
     product_delivery_charge: "0",
     product_code: "EPAYTEST",
-    success_url: "http://localhost:5173/paymentsuccess",
-    failure_url: "http://localhost:5173/paymentfailure",
+    success_url: "https://sahara-frontend.onrender.com/paymentsuccess",
+    failure_url: "https://sahara-frontend.onrender.com/paymentfailure",
     signed_field_names: "total_amount,transaction_uuid,product_code",
     signature: "",
     secret: "8gBm/:&EnhH.1/q",
@@ -47,7 +47,7 @@ const Fund = () => {
       formData.secret
     );
 
-    const baseSuccessURL = "http://localhost:5173/paymentsuccess";
+    const baseSuccessURL = "https://sahara-frontend.onrender.com/paymentsuccess";
     const userPayload = {
       fullName: formData.fullName,
       email: formData.email,
